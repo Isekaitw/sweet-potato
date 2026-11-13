@@ -8,7 +8,7 @@ const hint = document.querySelector("#hint");
 const game = new PotatoGame(canvas);
 
 // Keep these paths stable so the bundled art can be added without code changes.
-const DEFAULT_BACKGROUND_PATH = "./assets/fuu.png";
+const DEFAULT_BACKGROUND_PATH = "./assets/fuu.jpg";
 const POTATO_IMAGE_PATH = "./assets/potato.png";
 
 function loadBundledImage(path) {
