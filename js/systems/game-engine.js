@@ -15,6 +15,7 @@ export class PotatoGame {
     this.sparks = [];
     this.background = null;
     this.backgroundLoaded = false;
+    this.potatoImage = null;
     this.pointer = { x: 0, y: 0 };
     this.isFiring = false;
     this.fireTimer = null;
@@ -78,12 +79,19 @@ export class PotatoGame {
     this.backgroundLoaded = Boolean(image);
   }
 
+  setPotatoImage(image) {
+    this.potatoImage = image || null;
+  }
+
   throwPotato() {
     if (this.potatoes.length >= MAX_POTATOES) return;
     const flightTime = 1.05;
     const targetX = (this.pointer.x - this.centerX) / this.planeScale;
     const targetY = (this.pointer.y - this.centerY) / this.planeScale;
-    const startY = this.height * 0.39;
+    // World-space Y is relative to the camera center. Convert the desired
+    // bottom launch point into world units at the camera's starting depth.
+    const startScreenY = this.height * 0.88;
+    const startY = (startScreenY - this.centerY) / (FOCAL_LENGTH / CAMERA_DISTANCE);
     const mass = 0.72 + Math.random() * 0.9;
     const direction = Math.atan2(targetY - startY, targetX || 0.001);
     this.potatoes.push({
@@ -155,7 +163,9 @@ export class PotatoGame {
     this.resolvePotatoCollisions();
     this.potatoes = this.potatoes.filter(potato => {
       const point = this.project(potato);
-      const radius = potato.radius * point.scale * 1.5;
+      // Keep the potato until its entire projected artwork is outside the canvas.
+      // The conservative bound also covers the rotated sprite's corners.
+      const radius = potato.radius * point.scale * 1.9;
       return point.x + radius >= 0 && point.x - radius <= this.width &&
         point.y + radius >= 0 && point.y - radius <= this.height;
     });
@@ -265,6 +275,18 @@ export class PotatoGame {
 
   drawPotato(ctx, potato, point) {
     const size = potato.radius * point.scale * 2.2;
+    if (this.potatoImage && this.potatoImage.complete) {
+      const image = this.potatoImage;
+      const fit = Math.min((size * 1.65) / image.naturalWidth, (size * 1.25) / image.naturalHeight);
+      const width = image.naturalWidth * fit;
+      const height = image.naturalHeight * fit;
+      ctx.save();
+      ctx.translate(point.x, point.y);
+      ctx.rotate(potato.angle);
+      ctx.drawImage(image, -width / 2, -height / 2, width, height);
+      ctx.restore();
+      return;
+    }
     ctx.save();
     ctx.translate(point.x, point.y);
     ctx.rotate(potato.angle);
