@@ -166,9 +166,12 @@ export class PotatoGame {
       if (potato.z + CAMERA_DISTANCE <= 0) return false;
       const point = this.project(potato);
       // Bound the full enlarged sprite, including its rotated corners.
-      const radius = potato.radius * Math.abs(point.scale) * 7;
+      const radius = potato.radius * Math.abs(point.scale) * 22;
+      // The top edge is intentionally not a removal boundary: potatoes may
+      // leave through the top and continue their trajectory until they exit
+      // through the left, right, or bottom edge.
       return point.x + radius >= 0 && point.x - radius <= this.width &&
-        point.y + radius >= 0 && point.y - radius <= this.height;
+        point.y + radius >= 0;
     });
 
     for (const spark of this.sparks) spark.life -= dt;
@@ -212,16 +215,19 @@ export class PotatoGame {
 
   makeSparks(potato) {
     const point = this.project(potato);
-    for (let i = 0; i < 9; i++) {
-      const angle = (Math.PI * 2 * i) / 9 + Math.random() * 0.25;
-      const speed = 35 + Math.random() * 65;
+    const burstSize = potato.radius * Math.abs(point.scale) * 20;
+    for (let i = 0; i < 12; i++) {
+      const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.18;
+      const speed = 95 + Math.random() * 105;
+      const distance = burstSize * (0.18 + Math.random() * 0.18);
       this.sparks.push({
-        x: point.x, y: point.y,
+        x: point.x + Math.cos(angle) * distance,
+        y: point.y + Math.sin(angle) * distance,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        life: 0.42,
-        maxLife: 0.42,
-        size: 2 + Math.random() * 3
+        life: 0.58,
+        maxLife: 0.58,
+        size: Math.max(5, burstSize * (0.12 + Math.random() * 0.06))
       });
     }
   }
@@ -275,7 +281,7 @@ export class PotatoGame {
   }
 
   drawPotato(ctx, potato, point) {
-    const size = potato.radius * point.scale * 6.6;
+    const size = potato.radius * point.scale * 20;
     if (this.potatoImage && this.potatoImage.complete) {
       const image = this.potatoImage;
       const fit = Math.min((size * 1.65) / image.naturalWidth, (size * 1.25) / image.naturalHeight);
