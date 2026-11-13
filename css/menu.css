@@ -1,0 +1,5 @@
+.menu-screen { padding: 48px 24px; border: 2px solid #f0dfc8; border-radius: 28px; background: #fffdf8; box-shadow: 0 18px 50px #70431a12; }
+.primary-button, .secondary-button { border: 0; border-radius: 999px; padding: 12px 24px; margin: 8px; }
+.primary-button { color: white; background: #b86d3c; }
+.secondary-button { color: #68452e; background: #f3e6d5; }
+.best-score { margin-top: 24px; color: #8c735d; }
