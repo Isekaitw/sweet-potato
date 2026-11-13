@@ -162,10 +162,11 @@ export class PotatoGame {
 
     this.resolvePotatoCollisions();
     this.potatoes = this.potatoes.filter(potato => {
+      // The perspective projection is undefined once an object passes the camera plane.
+      if (potato.z + CAMERA_DISTANCE <= 0) return false;
       const point = this.project(potato);
-      // Keep the potato until its entire projected artwork is outside the canvas.
-      // The conservative bound also covers the rotated sprite's corners.
-      const radius = potato.radius * point.scale * 9;
+      // Bound the full enlarged sprite, including its rotated corners.
+      const radius = potato.radius * Math.abs(point.scale) * 7;
       return point.x + radius >= 0 && point.x - radius <= this.width &&
         point.y + radius >= 0 && point.y - radius <= this.height;
     });
