@@ -215,7 +215,7 @@ export class PotatoGame {
 
   makeSparks(potato) {
     const point = this.project(potato);
-    const burstSize = potato.radius * Math.abs(point.scale) * 20;
+    const burstSize = potato.radius * Math.abs(point.scale) * 7.5;
     for (let i = 0; i < 12; i++) {
       const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.18;
       const speed = 95 + Math.random() * 105;
@@ -281,7 +281,7 @@ export class PotatoGame {
   }
 
   drawPotato(ctx, potato, point) {
-    const size = potato.radius * point.scale * 20;
+    const size = potato.radius * point.scale * 7.5;
     if (this.potatoImage && this.potatoImage.complete) {
       const image = this.potatoImage;
       const fit = Math.min((size * 1.65) / image.naturalWidth, (size * 1.25) / image.naturalHeight);
@@ -325,21 +325,21 @@ export class PotatoGame {
     const ctx = this.context;
     ctx.clearRect(0, 0, this.width, this.height);
     this.drawBackground(ctx);
-    const ordered = [...this.potatoes].sort((a, b) => b.z - a.z);
-    for (const potato of ordered) this.drawPotato(ctx, potato, this.project(potato));
+    // Draw collision effects first so potatoes remain visually in front.
     for (const spark of this.sparks) {
-      const alpha = Math.max(0, spark.life / spark.maxLife);
       ctx.save();
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = 1;
       ctx.strokeStyle = "#fff6b5";
       ctx.lineWidth = Math.max(1, spark.size * 0.65);
       ctx.beginPath();
       ctx.moveTo(spark.x, spark.y);
-      ctx.lineTo(spark.x + spark.vx * (1 - alpha) * 0.12, spark.y + spark.vy * (1 - alpha) * 0.12);
+      ctx.lineTo(spark.x + spark.vx * 0.12, spark.y + spark.vy * 0.12);
       ctx.stroke();
       ctx.restore();
       spark.x += spark.vx * 0.016;
       spark.y += spark.vy * 0.016;
     }
+    const ordered = [...this.potatoes].sort((a, b) => b.z - a.z);
+    for (const potato of ordered) this.drawPotato(ctx, potato, this.project(potato));
   }
 }
