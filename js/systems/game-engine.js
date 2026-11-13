@@ -165,7 +165,7 @@ export class PotatoGame {
       const point = this.project(potato);
       // Keep the potato until its entire projected artwork is outside the canvas.
       // The conservative bound also covers the rotated sprite's corners.
-      const radius = potato.radius * point.scale * 2.35;
+      const radius = potato.radius * point.scale * 9;
       return point.x + radius >= 0 && point.x - radius <= this.width &&
         point.y + radius >= 0 && point.y - radius <= this.height;
     });
@@ -274,7 +274,7 @@ export class PotatoGame {
   }
 
   drawPotato(ctx, potato, point) {
-    const size = potato.radius * point.scale * 2.2;
+    const size = potato.radius * point.scale * 6.6;
     if (this.potatoImage && this.potatoImage.complete) {
       const image = this.potatoImage;
       const fit = Math.min((size * 1.65) / image.naturalWidth, (size * 1.25) / image.naturalHeight);
