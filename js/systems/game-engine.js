@@ -219,7 +219,7 @@ export class PotatoGame {
     for (let i = 0; i < 12; i++) {
       const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.18;
       const speed = 95 + Math.random() * 105;
-      const distance = burstSize * (0.18 + Math.random() * 0.18);
+      const distance = burstSize * (0.45 + Math.random() * 0.35);
       this.sparks.push({
         x: point.x + Math.cos(angle) * distance,
         y: point.y + Math.sin(angle) * distance,
