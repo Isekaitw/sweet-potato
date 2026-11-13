@@ -10,7 +10,7 @@ const screens = {
 };
 
 export function showScreen(name) {
-  for ( (const [key, element]) of Object.entries(screens)) {
+  for (const [key, element] of Object.entries(screens)) {
     element.hidden = key !== name;
   }
 }
