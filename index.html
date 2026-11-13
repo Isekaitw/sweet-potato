@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff4df">
+  <meta name="description" content="Sweet Potato — a little game project.">
+  <title>Sweet Potato</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <main id="app" class="app">
+    <section id="menu-screen" class="screen menu-screen" aria-labelledby="game-title">
+      <p class="eyebrow">A tiny game project</p>
+      <h1 id="game-title">Sweet Potato</h1>
+      <p class="subtitle">準備好開始冒險了嗎？</p>
+      <button id="start-button" class="primary-button" type="button">開始遊戲</button>
+      <button id="settings-button" class="secondary-button" type="button">設定</button>
+      <p id="best-score" class="best-score">最高分：0</p>
+    </section>
+
+    <section id="game-screen" class="screen game-screen" aria-label="遊戲畫面" hidden>
+      <header class="game-header">
+        <span id="score-display">分數：0</span>
+        <button id="back-button" class="secondary-button" type="button">返回選單</button>
+      </header>
+      <div id="game-board" class="game-board" role="application" aria-label="遊戲區域">
+        <p class="placeholder">遊戲核心已準備就緒 🌱</p>
+      </div>
+    </section>
+
+    <section id="settings-screen" class="screen settings-screen" aria-labelledby="settings-title" hidden>
+      <h2 id="settings-title">設定</h2>
+      <label><input id="sound-toggle" type="checkbox" checked> 音效</label>
+      <button id="settings-back-button" class="secondary-button" type="button">返回</button>
+    </section>
+  </main>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
