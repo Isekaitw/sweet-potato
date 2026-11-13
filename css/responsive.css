@@ -1,0 +1,6 @@
+@media (max-width: 520px) {
+  .app { padding: 14px; }
+  .menu-screen { padding: 36px 16px; }
+  .game-header { align-items: flex-start; }
+  .game-board { min-height: 280px; }
+}
