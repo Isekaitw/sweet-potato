@@ -1,6 +1,6 @@
 @media (max-width: 520px) {
-  .app { padding: 14px; }
-  .menu-screen { padding: 36px 16px; }
-  .game-header { align-items: flex-start; }
-  .game-board { min-height: 280px; }
+  .toolbar { top: max(10px, env(safe-area-inset-top)); left: 10px; right: 10px; }
+  .game-name { font-size: 12px; }
+  .toolbar button { padding: 9px 12px; font-size: 13px; }
+  .hint { font-size: 12px; bottom: max(12px, env(safe-area-inset-bottom)); }
 }
