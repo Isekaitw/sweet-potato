@@ -7,6 +7,19 @@ const changeBackgroundButton = document.querySelector("#change-background");
 const hint = document.querySelector("#hint");
 const game = new PotatoGame(canvas);
 
+// Keep these paths stable so the bundled art can be added without code changes.
+const DEFAULT_BACKGROUND_PATH = "./assets/fuu.png";
+const POTATO_IMAGE_PATH = "./assets/potato.png";
+
+function loadBundledImage(path) {
+  return new Promise(resolve => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = path;
+  });
+}
+
 function showHint(message, isError = false) {
   hint.textContent = message;
   hint.classList.toggle("error", isError);
@@ -46,9 +59,17 @@ fileInput.addEventListener("change", event => {
 });
 
 try {
+  const [defaultBackground, potatoImage] = await Promise.all([
+    loadBundledImage(DEFAULT_BACKGROUND_PATH),
+    loadBundledImage(POTATO_IMAGE_PATH)
+  ]);
+  if (defaultBackground) game.setBackground(defaultBackground);
+  if (potatoImage) game.setPotatoImage(potatoImage);
+
+  // A previously saved player background takes priority over the bundled default.
   const savedImage = await loadBackground();
   if (savedImage) game.setBackground(await createImageBitmap(savedImage));
 } catch (error) {
-  console.warn("無法讀取已保存的背景圖片。", error);
+  console.warn("無法載入預設圖片或已保存的背景圖片。", error);
 }
 game.start();
